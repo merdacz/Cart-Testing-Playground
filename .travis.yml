@@ -1,8 +1,0 @@
-language: csharp
-solution: personal-tgdnet-fixturearrangement.sln
-install:
-  - nuget restore personal-tgdnet-fixturearrangement.sln
-  - nuget install xunit.runner.console -Version 2.0.0 -OutputDirectory testrunner
-script:
-  - xbuild /p:Configuration=Release personal-tgdnet-fixturearrangement.sln
-  - mono ./testrunner/xunit.runner.console.2.0.0/tools/xunit.console.exe ./CartService.Tests/bin/Release/CartService.Tests.dll
