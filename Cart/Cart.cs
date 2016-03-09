@@ -2,7 +2,6 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
 
     using NMoneys;
 
@@ -37,18 +36,11 @@
             var currentPrice = this.pricingService.GetPrice(productId);
             if (this.items.ContainsKey(productId))
             {
-                var item = this.items[productId];
-                item.Increase(quantity);
-                if (item.LastPrice != currentPrice)
-                {
-                    item.UpdatePrice(currentPrice);
-                    this.userFeedback.Send("LastPrice dropped or increased for " + productId);
-                }
+                this.UpdateExistingItem(productId, quantity, currentPrice);
             }
             else
             {
-                var item = new CartItem(productId, quantity, currentPrice);
-                this.items.Add(productId, item);
+                this.CreateNewItem(productId, quantity, currentPrice);
             }
         }
 
@@ -59,18 +51,42 @@
             foreach (var item in this.items.Values)
             {
                 var itemTotal = item.CalculateCurrentItemTotal(this.pricingService);
-                if (itemTotal.CurrencyCode == targetCurrency)
-                {
-                    total = total + itemTotal;
-                }
-                else
-                {
-                    var convertedAmount = this.exchangeService.Exchange(itemTotal, targetCurrency);
-                    total = total + convertedAmount;
-                }
+                Money convertedAmount = ConvertToCurrency(itemTotal, targetCurrency);
+
+                total = total + convertedAmount;
             }
 
             return total;
         }
+
+        private Money ConvertToCurrency(Money itemTotal, CurrencyIsoCode targetCurrency)
+        {
+            if (itemTotal.CurrencyCode == targetCurrency)
+            {
+                return itemTotal;
+            }
+            else
+            {
+                return this.exchangeService.Exchange(itemTotal, targetCurrency);
+            }
+        }
+
+        private void CreateNewItem(Guid productId, int quantity, Money currentPrice)
+        {
+            var item = new CartItem(productId, quantity, currentPrice);
+            this.items.Add(productId, item);
+        }
+
+        private void UpdateExistingItem(Guid productId, int quantity, Money currentPrice)
+        {
+            var item = this.items[productId];
+            item.Increase(quantity);
+            if (item.LastPrice != currentPrice)
+            {
+                item.UpdatePrice(currentPrice);
+                this.userFeedback.Send("LastPrice dropped or increased for " + productId);
+            }
+        }
+
     }
 }
