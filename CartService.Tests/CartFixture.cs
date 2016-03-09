@@ -22,29 +22,11 @@ namespace CartService.Tests
 
         private CurrencyIsoCode defaultCurrency = CurrencyIsoCode.USD;
 
-        public IEnumerable<CartItemFixture> Items
-        {
-            get
-            {
-                return this.itemsFixtures.Select(item => item);
-            }
-        }
+        public IEnumerable<CartItemFixture> Items => this.itemsFixtures.Select(item => item);
 
-        public CartItemFixture ExistingItem
-        {
-            get
-            {
-                return this.Items.FirstOrDefault();
-            }
-        }
+        public CartItemFixture ExistingItem => this.Items.FirstOrDefault();
 
-        public IUserFeedback UserFeedback
-        {
-            get
-            {
-                return this.userFeedback;
-            }
-        }
+        public IUserFeedback UserFeedback => this.userFeedback;
 
         public static implicit operator Cart(CartFixture fixture)
         {

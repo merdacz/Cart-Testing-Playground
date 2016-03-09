@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Runtime.CompilerServices;
 
     using NMoneys;
 
@@ -29,16 +30,7 @@
             this.userFeedback = userFeedback;
         }
 
-        public IEnumerable<CartItem> Items
-        {
-            get
-            {
-                foreach (var item in this.items.Values)
-                {
-                    yield return item;
-                }
-            }
-        } 
+        public IEnumerable<CartItem> Items => this.items.Values;
 
         public void AddItem(Guid productId, int quantity)
         {
