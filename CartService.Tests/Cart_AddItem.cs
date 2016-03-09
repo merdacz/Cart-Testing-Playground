@@ -10,7 +10,7 @@
 
     public class Cart_AddItem
     {
-        private  CartFixture fixture = new CartFixture();
+        private readonly CartFixture fixture = new CartFixture();
             
         [Fact]
         public void When_adding_an_existing_item_again__Should_merge_it_with_existing_entry()
