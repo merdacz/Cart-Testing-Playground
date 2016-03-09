@@ -23,7 +23,7 @@
         }
 
         [Fact]
-        public void When_adding_an_existing_item_for_which_price_has_changed__ShouldNotifyUser()
+        public void When_adding_an_existing_item_for_which_price_has_changed__Should_notify_user()
         {
             Cart sut = fixture.WithProduct();
             fixture.ChangePrice(fixture.ExistingItem.ProductId);

@@ -23,9 +23,9 @@
         [Fact]
         public void Item_in_default_currency_price__Should_match_total()
         {
-            var itemPrice = new Money(10, CurrencyIsoCode.USD);
+            var itemPrice = Some.RandomPrice();
             Cart sut = fixture
-                .WithDefaultCurrency(CurrencyIsoCode.USD)
+                .WithDefaultCurrency(itemPrice.CurrencyCode)
                 .WithProduct(itemPrice);
             
             var result = sut.CalculateTotal();
@@ -37,8 +37,8 @@
         public void Items_with_non_default_currency__Should_be_exchanged_before_summing_up()
         {
             Cart sut = fixture
-                .WithProduct(new Money(5, CurrencyIsoCode.GBP), 3)
-                .WithProduct(new Money(10, CurrencyIsoCode.EUR), 2);
+                .WithProduct(new Money(5, CurrencyIsoCode.GBP), exchangeRate: 3)
+                .WithProduct(new Money(10, CurrencyIsoCode.EUR), exchangeRate: 2);
             
             var result = sut.CalculateTotal();
 

@@ -73,6 +73,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Some.cs" />
     <Compile Include="CartFixture.cs" />
     <Compile Include="Cart_CalculateTotal.cs" />
     <Compile Include="Cart_AddItem.cs" />
