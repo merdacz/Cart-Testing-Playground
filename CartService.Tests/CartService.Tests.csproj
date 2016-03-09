@@ -65,7 +65,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CartFixture.cs" />
-    <Compile Include="CartTests.cs" />
+    <Compile Include="Cart_CalculateTotal.cs" />
+    <Compile Include="Cart_AddItem.cs" />
     <Compile Include="FakeExchangeService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

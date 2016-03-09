@@ -22,19 +22,19 @@ namespace CartService.Tests
 
         private CurrencyIsoCode defaultCurrency = CurrencyIsoCode.USD;
 
-        public CurrencyIsoCode DefaultCurrency
-        {
-            get
-            {
-                return this.defaultCurrency;
-            }
-        }
-
         public IEnumerable<CartItemFixture> Items
         {
             get
             {
                 return this.itemsFixtures.Select(item => item);
+            }
+        }
+
+        public CartItemFixture ExistingItem
+        {
+            get
+            {
+                return this.Items.FirstOrDefault();
             }
         }
 
@@ -57,18 +57,13 @@ namespace CartService.Tests
             return this;
         }
 
-        public CartFixture AddManyProductsWithDefaultCurrency()
+        public CartFixture WithProduct()
         {
-            int many = 3;
-            for (int i = 1; i <= many; i++)
-            {
-                this.itemsFixtures.Add(new CartItemFixture(Guid.NewGuid(), 1, new Money(5 * i, this.defaultCurrency)));
-            }
-
-            return this;
+            this.WithProduct(new Money(10, this.defaultCurrency));
+            return this;    
         }
 
-        public CartFixture AddSingleProduct(Money price, decimal exchangeRate = 1)
+        public CartFixture WithProduct(Money price, decimal exchangeRate = 1)
         {
             this.itemsFixtures.Add(new CartItemFixture(Guid.NewGuid(), 1, price));
             this.exchangeService.DefineExchangeRate(price.CurrencyCode, this.defaultCurrency, exchangeRate);
@@ -83,7 +78,7 @@ namespace CartService.Tests
             return this;
         }
 
-        public void ChangePrice(Guid productId)
+        public CartFixture ChangePrice(Guid productId)
         {
             var item = this.itemsFixtures.FirstOrDefault(i => i.ProductId == productId);
             if (item == null)
@@ -95,6 +90,8 @@ namespace CartService.Tests
             item.UpdatePrice(newPrice);
 
             A.CallTo(() => this.pricingService.GetPrice(productId)).Returns(newPrice);
+
+            return this;
         }
 
         public Cart CreateSut()
